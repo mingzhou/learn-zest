@@ -1,0 +1,4 @@
+dependencies {
+    compile libraries.jackson
+    runtime "org.qi4j.core:org.qi4j.core.runtime:2.1"
+}

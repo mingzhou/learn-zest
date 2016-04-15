@@ -1,0 +1,17 @@
+def jacksonVersion = '2.7.3'
+def mysqlVersion = '5.1.35'
+def postgresqlVersion = '9.4-1201-jdbc41'
+
+rootProject.ext {
+    libraries = [
+            jackson        : ["com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
+                              "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion",
+                              "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion"],
+
+            postgres       :
+                    "org.postgresql:postgresql:$postgresqlVersion",
+            mysql_connector:
+                    "mysql:mysql-connector-java:$mysqlVersion"
+
+    ]
+}
