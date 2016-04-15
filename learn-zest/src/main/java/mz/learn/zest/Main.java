@@ -37,7 +37,11 @@ public class Main {
             public void assemble(ModuleAssembly module_)
                     throws AssemblyException {
 
+
                 module_.values(TestValue.class);
+                if (true) {
+                    module_.entities(TestValue.class);
+                }
                 module_.entities(TestEntity.class);
                 module_.services(JacksonValueSerializationService.class)
                         .taggedWith(ValueSerialization.Formats.JSON)
@@ -58,8 +62,8 @@ public class Main {
 
         System.out.println(serialization);
 
+        TestValue value;
         if (true) {
-            TestValue value;
             {
                 ValueBuilder<TestValue> builder = module.newValueBuilder(TestValue.class);
                 builder.prototype().price().set(23.45);
@@ -73,9 +77,35 @@ public class Main {
                     _sLogger.info("de value {}, {}, {}", value, value.price().get(), value.testenum().get());
                 }
             }
-
+            {
+                String valueId = "abcdefg";
+                {
+                    UnitOfWork uow = module.newUnitOfWork(UsecaseBuilder.newUsecase("create"));
+                    EntityBuilder<TestValue> builder = uow.newEntityBuilder(TestValue.class, valueId);
+                    builder.instance().price().set(45.67);
+                    builder.instance().testenum().set(TestEnum.A);
+                    value = builder.newInstance();
+                    try {
+                        uow.complete();
+                    } catch (Exception e_) {
+                        uow.discard();
+                        e_.printStackTrace();
+                    }
+                }
 //        if (true)
 //            return;
+                {
+                    UnitOfWork uow = module.newUnitOfWork(UsecaseBuilder.newUsecase("create"));
+                    value = uow.get(TestValue.class, valueId);
+                    System.out.println(value.price().get());
+                    System.out.println(value.testenum().get());
+                    uow.discard();
+                }
+            }
+        }
+//        if (true)
+//            return;
+        if (false) {
             TestEntity entity;
             String entityId = "abcdefg";
             {
